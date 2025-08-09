@@ -1,52 +1,34 @@
-import React from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useSelector } from '@store';
+import { Preloader } from '@ui';
+import { getUserState } from '@slices/userSlice';
 
-import { Navigate, useLocation } from 'react-router-dom';
-import { getIsAuthChecked, getUserInfo } from '@slices';
-import { useSelector } from '../../services/store';
-
-type TProtectedRouteProps = {
+type ProtectedRouteProps = {
+  // children: React.ReactElement;
   onlyUnAuth?: boolean;
-  component: React.JSX.Element;
 };
 
-const Protected = ({
-  onlyUnAuth = false,
-  component
-}: TProtectedRouteProps): React.JSX.Element => {
-  const user = useSelector(getUserInfo);
-  const isAuthChecked = useSelector(getIsAuthChecked);
+export const ProtectedRoute = ({
+  // children,
+  onlyUnAuth
+}: ProtectedRouteProps) => {
   const location = useLocation();
 
-  // url == "/profile", onlyUnAuth = false, user == null
-  // url == "/login", from: "/profile", onlyUnAuth = true, user == null
-  // url == "/login", from: "/profile", onlyUnAuth = true, user != null
-  // url == "/profile", onlyUnAuth = false, user != null
-  // url == "/profile", onlyUnAuth = false, user == null
+  const isAuthChecked = useSelector(getUserState).isAuthChecked;
+  const isAuthenticated = useSelector(getUserState).isAuthenticated;
 
-  if (!isAuthChecked) {
-    return <p>Загрузка....</p>;
+  if (!onlyUnAuth && !isAuthenticated) {
+    return <Navigate replace to='/login' state={{ from: location }} />;
   }
 
-  if (!onlyUnAuth && !user) {
-    // for authorized user, but user is unauthorized
-    return <Navigate to='/login' state={{ from: location }} />;
+  if (onlyUnAuth && isAuthenticated) {
+    const from = location.state?.from || { pathname: '/' };
+    return <Navigate replace to={from} />;
   }
 
-  if (onlyUnAuth && user) {
-    // for unauthorized user, but user is authorized
-    const { from } = location.state ?? { from: { pathname: '/' } };
-    return <Navigate to={from} />;
+  if (isAuthChecked) {
+    return <Preloader />;
   }
 
-  // onlyUnAuth && !user for unauthorized and unauthorized
-  // !onlyUnAuth && user for authorized and authorized
-
-  return component;
+  return <Outlet />;
 };
-
-export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({
-  component
-}: {
-  component: React.JSX.Element;
-}): React.JSX.Element => <Protected onlyUnAuth component={component} />;

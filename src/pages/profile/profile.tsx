@@ -1,15 +1,18 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
-import { getLoginUserRequest, getUserInfo, userUpdate } from '@slices';
-import { TUser } from '@utils-types';
+import { useSelector, useDispatch } from '@store';
+import { getUser, getUserState, updateUser } from '@slices/userSlice';
 import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
+  const data = useSelector(getUserState).userData;
+  const loading = useSelector(getUserState).request;
   const dispatch = useDispatch();
-  const user: TUser = useSelector(getUserInfo) as TUser;
-  const isLoading = useSelector(getLoginUserRequest);
+
+  const user = {
+    name: data?.name || '',
+    email: data?.email || ''
+  };
 
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -20,10 +23,10 @@ export const Profile: FC = () => {
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
+      name: user.name || '',
+      email: user.email || ''
     }));
-  }, [user]);
+  }, [data]);
 
   const isFormChanged =
     formValue.name !== user?.name ||
@@ -32,14 +35,12 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(
-      userUpdate({
-        name: formValue.name,
-        email: formValue.email,
-        password: formValue.password
-      })
-    );
+    dispatch(updateUser(formValue)).then(() => dispatch(getUser()));
   };
+
+  if (loading) {
+    return <Preloader />;
+  }
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -56,10 +57,6 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
-
-  if (isLoading) {
-    return <Preloader />;
-  }
 
   return (
     <ProfileUI

@@ -1,39 +1,35 @@
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   ConstructorPage,
   Feed,
-  Login,
-  Register,
   ForgotPassword,
-  ResetPassword,
+  Login,
+  NotFound404,
   Profile,
   ProfileOrders,
-  NotFound404
+  Register,
+  ResetPassword
 } from '@pages';
-
 import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
-import { useDispatch } from '../../services/store';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { useDispatch } from '@store';
+import { getIngredients } from '@slices/ingredientSlice';
 import { useEffect } from 'react';
-import { checkUser, getIngredients } from '@slices';
+import { getUser } from '@slices/userSlice';
+import { CenteringComponent } from '../centering-component';
 
 const App = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const background = location.state?.background;
 
-  const handleModalClose = () => {
-    navigate(-1);
-  };
-
   useEffect(() => {
+    dispatch(getUser());
     dispatch(getIngredients());
-    dispatch(checkUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -41,112 +37,100 @@ const App = () => {
 
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
+
         <Route
           path='/ingredients/:id'
           element={
-            <div className={styles.centeredContainer}>
-              <h1 className='text text_type_main-large mt-30 mb-6'>
-                Детали ингредиента
-              </h1>
+            <CenteringComponent title={'Детали ингредиента'}>
               <IngredientDetails />
-            </div>
+            </CenteringComponent>
           }
         />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
-
-        <Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
-        <Route
-          path='/register'
-          element={<OnlyUnAuth component={<Register />} />}
-        />
-        <Route
-          path='/forgot-password'
-          element={<OnlyUnAuth component={<ForgotPassword />} />}
-        />
-        <Route
-          path='/reset-password'
-          element={<OnlyUnAuth component={<ResetPassword />} />}
-        />
-
-        <Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
-        <Route
-          path='/profile/orders'
-          element={<OnlyAuth component={<ProfileOrders />} />}
-        />
-
-        {/* Модальные маршруты */}
         <Route
           path='/feed/:number'
           element={
-            <Modal onClose={handleModalClose} title='Детали заказа'>
+            <CenteringComponent title={`#${location.pathname.match(/\d+/)}`}>
               <OrderInfo />
-            </Modal>
+            </CenteringComponent>
           }
         />
 
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal onClose={handleModalClose} title='Детали ингредиента'>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
+        <Route path='/feed' element={<Feed />} />
 
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <OnlyAuth
-              component={
-                <Modal onClose={handleModalClose} title='Детали заказа'>
-                  <OrderInfo />
-                </Modal>
-              }
-            />
-          }
-        />
-
-        <Route path='*' element={<NotFound404 />} />
-      </Routes>
-
-      {/* Рендер модалок поверх страниц */}
-      {background && (
-        <Routes>
+        <Route element={<ProtectedRoute onlyUnAuth />}>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+        </Route>
+        <Route element={<ProtectedRoute onlyUnAuth={false} />}>
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/orders' element={<ProfileOrders />} />
           <Route
-            path='/feed/:number'
+            path='/profile/orders/:number'
             element={
-              <Modal onClose={handleModalClose} title='Детали заказа'>
+              <Modal
+                title={`#${location.pathname.match(/\d+/)}`}
+                onClose={() => {
+                  history.back();
+                }}
+              >
                 <OrderInfo />
               </Modal>
             }
           />
+        </Route>
+        <Route path='*' element={<NotFound404 />} />
+      </Routes>
 
+      {background && (
+        <Routes>
           <Route
             path='/ingredients/:id'
             element={
-              <Modal onClose={handleModalClose} title='Детали ингредиента'>
+              <Modal
+                title={'Детали ингредиента'}
+                onClose={() => {
+                  history.back();
+                }}
+              >
                 <IngredientDetails />
               </Modal>
             }
           />
 
           <Route
-            path='/profile/orders/:number'
+            path='/feed/:number'
             element={
-              <OnlyAuth
-                component={
-                  <Modal onClose={handleModalClose} title='Детали заказа'>
-                    <OrderInfo />
-                  </Modal>
-                }
-              />
+              <Modal
+                title={`#${location.pathname.match(/\d+/)}`}
+                onClose={() => {
+                  history.back();
+                }}
+              >
+                <OrderInfo />
+              </Modal>
             }
           />
+          <Route element={<ProtectedRoute onlyUnAuth={false} />}>
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <Modal
+                  title={`#${location.pathname.match(/\d+/)}`}
+                  onClose={() => {
+                    history.back();
+                  }}
+                >
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+          </Route>
         </Routes>
       )}
     </div>
   );
 };
-
 export default App;

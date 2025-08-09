@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
-import { useDispatch } from '../../services/store';
-import { addIngredient } from '@slices';
+import { useDispatch } from '@store';
+import { addIngredient } from '@slices/constructorSlice';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {

@@ -1,17 +1,17 @@
-import { BurgerConstructorElementUI } from '@ui';
+import { BurgerConstructorItemUI } from '@ui';
 import type { Meta, StoryObj } from '@storybook/react';
 import { totalmem } from 'os';
 
 const meta = {
   title: 'Example/BurgerConstructorElement',
-  component: BurgerConstructorElementUI,
+  component: BurgerConstructorItemUI,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen'
   }
-} satisfies Meta<typeof BurgerConstructorElementUI>;
+} satisfies Meta<typeof BurgerConstructorItemUI>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -20,7 +20,7 @@ export const DefaultElement: Story = {
   args: {
     ingredient: {
       _id: '111',
-      uniqueId: '222',
+      id: '222',
       name: 'Булка',
       type: 'top',
       proteins: 12,
