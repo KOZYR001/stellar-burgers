@@ -35,8 +35,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
         <div className='pb-6'>
@@ -50,8 +50,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
         <div className='pb-6'>
@@ -65,8 +65,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             errorText={''}
             size={'default'}
             icon={'EditIcon'}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
         {isFormChanged && (

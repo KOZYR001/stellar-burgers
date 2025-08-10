@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import {
   Input,
   Button,
@@ -35,8 +35,8 @@ export const LoginUI: FC<LoginUIProps> = ({
               error={false}
               errorText=''
               size='default'
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             />
           </div>
           <div className='pb-6'>
