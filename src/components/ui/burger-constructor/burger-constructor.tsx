@@ -84,6 +84,8 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         size='large'
         children='Оформить заказ'
         onClick={onOrderClick}
+        data-cy='order-button'
+        disabled={!constructorItems.bun} // FIX: Кнопка неактивна без булки
       />
     </div>
 

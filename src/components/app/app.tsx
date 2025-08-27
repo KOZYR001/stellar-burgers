@@ -13,7 +13,7 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useDispatch } from '@store';
 import { getIngredients } from '@slices/ingredientSlice';
@@ -23,6 +23,7 @@ import { CenteringComponent } from '../centering-component';
 
 const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const background = location.state?.background;
 
@@ -41,9 +42,9 @@ const App = () => {
         <Route
           path='/ingredients/:id'
           element={
-            <CenteringComponent title={'Детали ингредиента'}>
+            <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
               <IngredientDetails />
-            </CenteringComponent>
+            </Modal>
           }
         />
         <Route path='/feed' element={<Feed />} />
@@ -86,20 +87,6 @@ const App = () => {
 
       {background && (
         <Routes>
-          <Route
-            path='/ingredients/:id'
-            element={
-              <Modal
-                title={'Детали ингредиента'}
-                onClose={() => {
-                  history.back();
-                }}
-              >
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-
           <Route
             path='/feed/:number'
             element={
