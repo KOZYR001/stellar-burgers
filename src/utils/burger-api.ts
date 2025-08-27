@@ -233,3 +233,6 @@ export const logoutApi = () =>
       token: localStorage.getItem('refreshToken')
     })
   }).then((res) => checkResponse<TServerResponse<{}>>(res));
+
+export type { TOrder, TUser };
+export type { TIngredient };
