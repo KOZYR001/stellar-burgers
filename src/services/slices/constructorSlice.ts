@@ -43,6 +43,7 @@ export const constructorSlice = createSlice({
   reducers: {
     addIngredient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        console.log('Adding ingredient:', action.payload); // Отладка
         if (action.payload.type === 'bun') {
           state.constructorItems.bun = action.payload;
         } else {

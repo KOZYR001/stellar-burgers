@@ -10,9 +10,9 @@
       "carbohydrates": 50,
       "calories": 300,
       "price": 100,
-      "image": "bun.png",
-      "image_large": "bun-large.png",
-      "image_mobile": "bun-mobile.png"
+      "image": "https://norma.nomoreparties.space/bun.png",
+      "image_large": "https://norma.nomoreparties.space/bun-large.png",
+      "image_mobile": "https://norma.nomoreparties.space/bun-mobile.png"
     },
     {
       "_id": "2",
@@ -23,9 +23,9 @@
       "carbohydrates": 10,
       "calories": 500,
       "price": 200,
-      "image": "patty.png",
-      "image_large": "patty-large.png",
-      "image_mobile": "patty-mobile.png"
+      "image": "https://norma.nomoreparties.space/patty.png",
+      "image_large": "https://norma.nomoreparties.space/patty-large.png",
+      "image_mobile": "https://norma.nomoreparties.space/patty-mobile.png"
     }
   ]
 }

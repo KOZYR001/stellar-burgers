@@ -6,7 +6,7 @@ import { TIngredient } from '@utils-types';
 
 const initialState: TIngredientState = {
   ingredients: [],
-  loading: false,
+  loading: true,
   error: null
 };
 

@@ -69,10 +69,20 @@ type TFeedsResponse = TServerResponse<{
 
 export const getIngredientsApi = () =>
   fetch(`${URL}/ingredients`)
-    .then((res) => checkResponse<TIngredientsResponse>(res))
+    .then((res) => {
+      console.log('API Response Status:', res.status); // Отладка
+      return checkResponse<TIngredientsResponse>(res);
+    })
     .then((data) => {
-      if (data?.success) return data.data;
+      if (data?.success) {
+        console.log('API Response Data:', data.data); // Отладка
+        return data.data;
+      }
       return Promise.reject(data);
+    })
+    .catch((err) => {
+      console.error('API Error:', err); // Отладка
+      return Promise.reject(err);
     });
 
 export const getFeedsApi = () =>

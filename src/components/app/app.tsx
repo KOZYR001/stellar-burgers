@@ -28,9 +28,13 @@ const App = () => {
   const background = location.state?.background;
 
   useEffect(() => {
-    dispatch(getUser());
     dispatch(getIngredients());
+    dispatch(getUser()); // Включено для обновления isAuthenticated
   }, [dispatch]);
+
+  const handleModalClose = () => {
+    navigate(-1); // Используем navigate для закрытия
+  };
 
   return (
     <div className={styles.app}>
@@ -42,7 +46,7 @@ const App = () => {
         <Route
           path='/ingredients/:id'
           element={
-            <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
+            <Modal title='Детали ингредиента' onClose={handleModalClose}>
               <IngredientDetails />
             </Modal>
           }
@@ -56,8 +60,6 @@ const App = () => {
             </CenteringComponent>
           }
         />
-
-        <Route path='/feed' element={<Feed />} />
 
         <Route element={<ProtectedRoute onlyUnAuth />}>
           <Route path='/login' element={<Login />} />
@@ -73,9 +75,7 @@ const App = () => {
             element={
               <Modal
                 title={`#${location.pathname.match(/\d+/)}`}
-                onClose={() => {
-                  history.back();
-                }}
+                onClose={handleModalClose}
               >
                 <OrderInfo />
               </Modal>
@@ -88,13 +88,19 @@ const App = () => {
       {background && (
         <Routes>
           <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
             path='/feed/:number'
             element={
               <Modal
                 title={`#${location.pathname.match(/\d+/)}`}
-                onClose={() => {
-                  history.back();
-                }}
+                onClose={handleModalClose}
               >
                 <OrderInfo />
               </Modal>
@@ -106,9 +112,7 @@ const App = () => {
               element={
                 <Modal
                   title={`#${location.pathname.match(/\d+/)}`}
-                  onClose={() => {
-                    history.back();
-                  }}
+                  onClose={handleModalClose}
                 >
                   <OrderInfo />
                 </Modal>
@@ -120,4 +124,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
