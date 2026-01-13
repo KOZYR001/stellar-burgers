@@ -8,16 +8,17 @@ export type TIngredientState = {
   error: string | null;
 };
 
-const initialState: TIngredientState = {
+export const initialState: TIngredientState = {
   ingredients: [],
-  loading: false,
+  loading: true,
   error: null
 };
 
-export const getIngredients = createAsyncThunk(
-  'ingredient/get',
-  getIngredientsApi
-);
+export const getIngredients = createAsyncThunk('ingredient/get', async () => {
+  const data = await getIngredientsApi();
+  console.log('Fetched ingredients:', data); // Отладка
+  return data;
+});
 
 export const ingredientSlice = createSlice({
   name: 'ingredient',

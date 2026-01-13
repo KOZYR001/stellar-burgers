@@ -53,14 +53,18 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
+  console.log('Rendering BurgerConstructor:', constructorItems); // Отладка
+
   return (
-    <BurgerConstructorUI
-      price={price}
-      orderRequest={orderRequest}
-      constructorItems={constructorItems}
-      orderModalData={orderModalData}
-      onOrderClick={onOrderClick}
-      closeOrderModal={closeOrderModal}
-    />
+    <section className='burger_constructor'>
+      <BurgerConstructorUI
+        price={price}
+        orderRequest={orderRequest}
+        constructorItems={constructorItems}
+        orderModalData={orderModalData}
+        onOrderClick={onOrderClick}
+        closeOrderModal={closeOrderModal}
+      />
+    </section>
   );
 };

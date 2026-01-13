@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "1",
+      "name": "Булка",
+      "type": "bun",
+      "proteins": 10,
+      "fat": 5,
+      "carbohydrates": 50,
+      "calories": 300,
+      "price": 100,
+      "image": "https://norma.nomoreparties.space/bun.png",
+      "image_large": "https://norma.nomoreparties.space/bun-large.png",
+      "image_mobile": "https://norma.nomoreparties.space/bun-mobile.png"
+    },
+    {
+      "_id": "2",
+      "name": "Котлета",
+      "type": "main",
+      "proteins": 20,
+      "fat": 15,
+      "carbohydrates": 10,
+      "calories": 500,
+      "price": 200,
+      "image": "https://norma.nomoreparties.space/patty.png",
+      "image_large": "https://norma.nomoreparties.space/patty-large.png",
+      "image_mobile": "https://norma.nomoreparties.space/patty-mobile.png"
+    }
+  ]
+}

@@ -50,8 +50,6 @@ export const BurgerIngredientItem: FC = () => {
       titleSaucesRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // return null;
-
   return (
     <BurgerIngredientItemUI
       currentTab={currentTab}
